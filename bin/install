@@ -44,9 +44,17 @@ install_tool() {
 
 get_platform() {
 	if [ "$(uname)" = "Linux" ]; then
-		echo "$(uname -m)-unknown-linux-gnu"
+		if [ "$(uname -m)" = "aarch64" ]; then
+			echo "aarch64-unknown-linux-musl"
+		else
+			echo "$(uname -m)-unknown-linux-gnu"
+		fi
 	elif [ "$(uname)" = "Darwin" ]; then
-		echo "$(uname -m)-apple-darwin"
+		if [ "$(uname -m)" = "arm64" ]; then
+			echo "x86_64-apple-darwin"
+		else
+			echo "$(uname -m)-apple-darwin"
+		fi
 	else
 		echo "Unknown or unsupported machine name '$(uname)'" >&2
 		exit 1
